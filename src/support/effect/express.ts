@@ -106,6 +106,26 @@ function useRouter<E=never,R=never>(path: string, effect: Effect.Effect<E.Router
     return bindEffect(path, effect);
 }
 
+export type Module<Path extends string, E, R> = {
+    path: Path,
+    router: RouterEffect<E, R>
+} 
+
+function makeModule<
+    const Path extends string, 
+    E, 
+    R
+>(path: Path, router: RouterEffect<E,R>): Module<Path,E,R>{ 
+    return {
+        path,
+        router
+    }
+}
+
+const useModule = <Path extends string, E, R>(module: Module<Path, E, R>) => {
+    return bindEffect(module.path, module.router)
+}
+
 /**
  * Takes an effect that resolves in an express app, and returns an effect that calls listen on it.
  */
@@ -323,6 +343,9 @@ const ExpressModule = {
     effect,
     useRouter,
 
+    makeModule,
+    useModule,
+
     gen,
     listen,
     makeApp,
@@ -334,7 +357,8 @@ const ExpressModule = {
     RouteContext,
     DefaultContext,
 
-    defaultExitHandler
+    defaultExitHandler,
+    express,
 }
 
 export { ExpressModule as Express }
