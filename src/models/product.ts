@@ -35,7 +35,7 @@ export const Product = Schema.Struct({
     sizeCategory: SizeCategory,
     price: Schema.Number.pipe(Schema.positive()),
     sizes: Schema.Array(Schema.String),
-    creator: Schema.UUID
+    creator: Schema.String
 })
 
 export type Product = Schema.Schema.Type<typeof Product>;

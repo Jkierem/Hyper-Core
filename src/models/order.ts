@@ -1,13 +1,13 @@
 import { Schema } from "@effect/schema";
 
 export const Cart = Schema.Array(Schema.Struct({
-    productId: Schema.UUID,
+    productId: Schema.String,
     amount: Schema.Positive.pipe(Schema.compose(Schema.Int)),
 }))
 
 export const Order = Schema.Struct({
-    eventId: Schema.UUID,
-    inviteId: Schema.UUID,
+    eventId: Schema.String,
+    inviteId: Schema.String,
     cart: Cart
 })
 

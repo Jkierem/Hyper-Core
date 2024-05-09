@@ -1,4 +1,4 @@
-import { Context, Data, Effect, Layer, pipe } from "effect"
+import { Context, Effect, Layer, pipe } from "effect"
 import { Product, decodeCreateProduct } from "../../models/product"
 import { ProductAdapter } from "../../adapters/product.adapter";
 import { NotFound } from "../../support/effect/array-ref";

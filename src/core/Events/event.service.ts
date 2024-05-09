@@ -7,6 +7,8 @@ import { decodeEventTransition } from "../../models/event";
 import { NoSuchElementException } from "effect/Cause";
 import { decodeOrder } from "../../models/order";
 import { and } from "effect/Boolean";
+import { Query } from "../../support/query/query";
+import { head } from "effect/Array";
 
 class InvalidEventState 
 extends TaggedHttpError("InvalidEventState", StatusCode(400)){}
@@ -67,19 +69,18 @@ export class EventService extends Context.Tag("EventService")<
 
         return EventService.of({
             getEventForConsumer(consumer, eventId) {
-                return adapter.getAll().pipe(
-                    Effect.flatMap(es => Option.fromNullable(
-                        es.find(e => e.id === eventId && e.invites.includes(consumer))
-                    )),
-                    Effect.catchTag("NoSuchElementException", (e) => {
-                        return Effect.fail(HttpNotFound.fromNoSuchElement(e));
-                    })
+                return pipe(
+                    adapter.doQuery(
+                        Query.id<HypeEvent>()
+                        .where("id","==", eventId)
+                        .and("invites", "array-contains", consumer)
+                    ),
+                    Effect.flatMap(head),
+                    Effect.mapError(HttpNotFound.fromNoSuchElement)
                 )
             },
             getEvents(creator: string){
-                return adapter.getAll().pipe(
-                    Effect.map(es => es.filter(e => e.creator === creator))
-                )
+                return adapter.doQuery(Query.where("creator", "==", creator))
             },
             createEvent(data: unknown){
                 return pipe(
