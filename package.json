@@ -12,7 +12,6 @@
     "@types/node": "^20.8.10",
     "effect": "^3.0.3",
     "express": "^4.19.2",
-    "firebase": "^10.11.1",
     "firebase-admin": "^12.1.0",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
