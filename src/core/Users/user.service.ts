@@ -1,10 +1,10 @@
 import { Context, Effect, Layer } from "effect"
-import { User } from "../../models/user";
+import { Users } from "../../models/user";
 import { UserAdapter } from "../../adapters/user.adapter";
 
 export declare namespace UserService {
     type Shape = {
-        getUsers: () => Effect.Effect<User[]>;
+        getUsers: () => Effect.Effect<Users>;
     }
 }
 

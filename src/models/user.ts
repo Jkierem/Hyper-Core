@@ -7,3 +7,7 @@ export const User = Schema.Struct({
 })
 
 export type User = Schema.Schema.Type<typeof User>;
+
+export const Users = Schema.Array(User);
+
+export type Users = Schema.Schema.Type<typeof Users>;

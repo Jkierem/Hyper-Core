@@ -327,8 +327,9 @@ const effectMethodHandlers = Methods.reduce((acc, next) => {
  * Similar to Effect.gen but moves the error to the success channel via Effect.either
  */
 const gen = <
-    Eff extends Effect.Effect<any, any, any>
->(f: (resume: Effect.Adapter) => Generator<Eff, void, any>) => pipe(
+    Eff extends Effect.Effect<any, any, any>,
+    AEff 
+>(f: (resume: Effect.Adapter) => Generator<Eff, AEff, any>) => pipe(
     Effect.gen(f),
     Effect.either
 )
