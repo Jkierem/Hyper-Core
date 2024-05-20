@@ -39,6 +39,7 @@ type OrderResult = OrderSubmit | OrderFailed
 
 export declare namespace EventService {
     type Shape = {
+        getEvent: (id: string) => Effect.Effect<HypeEvent, HttpNotFound>;
         getEvents: (creator: string) => Effect.Effect<HypeEvent[]>;
         getEventForConsumer: (consumer: string, eventId: string) => Effect.Effect<HypeEvent, HttpNotFound>;
         createEvent: (data: unknown) => Effect.Effect<HypeEvent, CreateError>;
@@ -68,6 +69,11 @@ export class EventService extends Context.Tag("EventService")<
         const adapter = yield* _(EventAdapter);
 
         return EventService.of({
+            getEvent(id) {
+                return adapter.get(id).pipe(
+                    Effect.mapError(HttpNotFound.fromInternal)
+                )
+            },
             getEventForConsumer(consumer, eventId) {
                 return pipe(
                     adapter.doQuery(

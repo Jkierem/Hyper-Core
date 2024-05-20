@@ -40,8 +40,12 @@ export const Product = Schema.Struct({
 
 export type Product = Schema.Schema.Type<typeof Product>;
 
+export const Products = Schema.Array(Product);
+
+export type Products = Schema.Schema.Type<typeof Products>;
+
 export const CreateProduct = Product.pipe(Schema.omit("id"));
 
 export type CreateProduct = Schema.Schema.Type<typeof CreateProduct>;
 
-export const decodeCreateProduct = Schema.decodeUnknown(CreateProduct);
+export const decodeCreateProduct = Schema.decodeUnknown(CreateProduct, { errors: "all" });

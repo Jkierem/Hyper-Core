@@ -116,11 +116,30 @@ const updateEvent = Express.gen(function*(_){
     )
 })
 
+const getEventById = Express.gen(function*(_){
+    const { response, request } = yield* _(Express.RouteContext("/:eventId"));
+    const service = yield* _(EventService);
+    const { eventId } = request.params
+    yield* _(
+        service.getEvent(eventId),
+        Effect.map((events) => {
+            response.status(200)
+            response.json(events)
+        }),
+        Effect.catchAll(e => {
+            response.status(e.code);
+            response.json(e.error);
+            return Effect.void;
+        })
+    );
+})
+
 const EventRouter = pipe(
     Express.makeRouter(),
     Express.get("/", getEventsByCreator),
     Express.post("/", postEvent),
     Express.post("/orders", postOrder),
+    Express.get("/:eventId", getEventById),
     Express.patch("/:eventId", updateEvent),
     Express.post("/:eventId", postTriggerEvent),
     Express.get("/consumers/:consumerId/:eventId", getEventConsumer),

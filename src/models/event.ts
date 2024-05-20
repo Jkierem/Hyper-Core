@@ -31,6 +31,10 @@ export const HypeEvent = Schema.Struct({
 
 export type HypeEvent = Schema.Schema.Type<typeof HypeEvent>;
 
+export const HypeEvents = Schema.Array(HypeEvent);
+
+export type HypeEvents = Schema.Schema.Type<typeof HypeEvents>;
+
 export const CreateEvent = HypeEvent.pipe(
     Schema.omit("id"),
     Schema.omit("inventory"),

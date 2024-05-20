@@ -21,7 +21,7 @@ const make = <T, ID>(startingData: T[], getId: (data: T) => ID) => {
             },
             read: () => Ref.get(ref),
             add: (elem: T) => {
-                return ref.pipe(Ref.update(e => [...e, elem]))
+                return ref.pipe(Ref.update(e => [elem, ...e]))
             },
             delete: (id: string) => {
                 return ref.pipe(Ref.update(ps => ps.filter(p => !Equal.equals(getId(p), id))))

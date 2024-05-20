@@ -4,7 +4,6 @@ import { CreateEvent, Firestore, FirestoreHypeEvent, HypeEvent } from "../models
 import { FirestoreAdapter } from "./firestore.adapter";
 import { Query } from "../support/query/query";
 
-
 export declare namespace EventAdapter {
     type Shape = {
         get: (eventId: string) => Effect.Effect<HypeEvent, NotFound<string>>;
