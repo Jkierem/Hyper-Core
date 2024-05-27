@@ -1,4 +1,6 @@
-function process(op: FirebaseFirestore.WhereFilterOp, a: any, b: any){
+import { WhereFilterOp, CollectionReference, Query as FireQuery } from "firebase-admin/firestore"
+
+function process(op: WhereFilterOp, a: any, b: any){
     switch(op){
         case "<":
             return a < b;
@@ -23,7 +25,7 @@ function process(op: FirebaseFirestore.WhereFilterOp, a: any, b: any){
 
 export class Query<A>{
     constructor(
-        private filters: [keyof A & string, FirebaseFirestore.WhereFilterOp, unknown][]
+        private filters: [keyof A & string, WhereFilterOp, unknown][]
     ){
     }
 
@@ -33,7 +35,7 @@ export class Query<A>{
 
     static where<A>(
         field: keyof A & string,
-        operator: FirebaseFirestore.WhereFilterOp,
+        operator: WhereFilterOp,
         value: unknown
     ){
         return new Query<A>([[field, operator, value]])
@@ -41,7 +43,7 @@ export class Query<A>{
 
     public where(
         field: keyof A & string,
-        operator: FirebaseFirestore.WhereFilterOp,
+        operator: WhereFilterOp,
         value: unknown
     ){
         return new Query([ ...this.filters, [field, operator, value]])
@@ -49,16 +51,16 @@ export class Query<A>{
 
     public and(
         field: keyof A & string,
-        operator: FirebaseFirestore.WhereFilterOp,
+        operator: WhereFilterOp,
         value: unknown
     ){
         return new Query([ ...this.filters, [field, operator, value]])
     }
 
-    toFirebase(ref: FirebaseFirestore.CollectionReference): FirebaseFirestore.Query {
+    toFirebase(ref: CollectionReference): FireQuery {
         return this.filters.reduce((acc, [field, operator, value]) => {
             return acc.where(field, operator, value);
-        }, ref as unknown as FirebaseFirestore.Query)
+        }, ref as unknown as FireQuery)
     };
 
     toMemory(){

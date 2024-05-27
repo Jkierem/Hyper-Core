@@ -3,6 +3,7 @@ import { ArrayRef, NotFound } from "../support/effect/array-ref";
 import { CreateEvent, Firestore, FirestoreHypeEvent, HypeEvent } from "../models/event";
 import { FirestoreAdapter } from "./firestore.adapter";
 import { Query } from "../support/query/query";
+import crypto from "node:crypto";
 
 export declare namespace EventAdapter {
     type Shape = {
@@ -130,7 +131,7 @@ export class EventAdapter extends Context.Tag("EventAdapter")<
             inventory: [
                 {
                     limit: Option.some(2),
-                    productId: "e3aa05a3-df59-4375-a714-fb41fe531e74",
+                    productId: "1",
                     stock: 100
                 }
             ],
@@ -139,6 +140,18 @@ export class EventAdapter extends Context.Tag("EventAdapter")<
             ],
             name: "Mock Event",
             productLimit: 50,
+            start: new Date(),
+            status: "ready",
+        },
+        {
+            creator: '2eb32c64-34f6-4f96-b2ae-92cc342dc5db',
+            id: '1705d85c-4ed6-4e49-8aad-31ab21633820',
+            inventory: [],
+            invites: [
+                "843eab58-e81c-4242-bce1-da9a5a00d90f",
+            ],
+            name: "Mock Event 2",
+            productLimit: 100,
             start: new Date(),
             status: "ready",
         }

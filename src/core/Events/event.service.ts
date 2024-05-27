@@ -1,7 +1,7 @@
 import { Array, Context, Data, Effect, Layer, Option, pipe } from "effect"
 import { CreateError, HttpError, StatusCode, TaggedHttpError } from "../../support/effect/common";
 import { EventAdapter } from "../../adapters/event.adapter";
-import { HypeEvent, decodeCreateEvent, decodeEventPatch } from "../../models/event";
+import { HypeEvent, IncreaseStock, decodeCreateEvent, decodeEventPatch } from "../../models/event";
 import { NotFound } from "../../support/effect/array-ref";
 import { decodeEventTransition } from "../../models/event";
 import { NoSuchElementException } from "effect/Cause";
@@ -9,6 +9,7 @@ import { decodeOrder } from "../../models/order";
 import { and } from "effect/Boolean";
 import { Query } from "../../support/query/query";
 import { head } from "effect/Array";
+import { Schema } from "@effect/schema";
 
 class InvalidEventState 
 extends TaggedHttpError("InvalidEventState", StatusCode(400)){}
@@ -56,6 +57,10 @@ export declare namespace EventService {
         >;
         recieveEventPatch: (eventId: string, changes: unknown) => Effect.Effect<
             HypeEvent,
+            HttpNotFound | NotAllowed | BadRequest
+        >
+        increaseStock: (eventId: string, data: unknown) => Effect.Effect<
+            void,
             HttpNotFound | NotAllowed | BadRequest
         >
     }
@@ -227,6 +232,31 @@ export class EventService extends Context.Tag("EventService")<
                             ...previous,
                             ...changes
                         }
+                    }),
+                    Effect.tap(updated => this.updateEvent(updated))
+                )
+            },
+            increaseStock(eventId, data: unknown) {
+                return pipe(
+                    Schema.decodeUnknown(IncreaseStock)(data),
+                    Effect.mapError(error => new BadRequest({ error })),
+                    Effect.bindTo("changes"),
+                    Effect.bind("previous", () => pipe(
+                        adapter.get(eventId),
+                        Effect.mapError(HttpNotFound.fromInternal)
+                    )),
+                    Effect.map(({ changes, previous }) => {
+                        const updated = {
+                            ...previous,
+                            inventory: previous.inventory.map(item => {
+                                if( item.productId === changes.productId ){
+                                    return { ...item, stock: item.stock + changes.amount };
+                                } else {
+                                    return item
+                                }
+                            })
+                        }
+                        return updated
                     }),
                     Effect.tap(updated => this.updateEvent(updated))
                 )

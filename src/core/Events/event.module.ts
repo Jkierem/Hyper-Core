@@ -134,6 +134,23 @@ const getEventById = Express.gen(function*(_){
     );
 })
 
+const postIncreaseStock = Express.gen(function* (_){
+    const { response, request } = yield* _(Express.RouteContext("/:eventId/stock"));
+    const service = yield* _(EventService);
+    yield* _(
+        service.increaseStock(request.params.eventId, request.body),
+        Effect.map((events) => {
+            response.status(200)
+            response.json(events)
+        }),
+        Effect.catchAll(e => {
+            response.status(e.code);
+            response.json(e.error);
+            return Effect.void;
+        })
+    );
+})
+
 const EventRouter = pipe(
     Express.makeRouter(),
     Express.get("/", getEventsByCreator),
@@ -142,6 +159,7 @@ const EventRouter = pipe(
     Express.get("/:eventId", getEventById),
     Express.patch("/:eventId", updateEvent),
     Express.post("/:eventId", postTriggerEvent),
+    Express.post("/:eventId/stock", postIncreaseStock),
     Express.get("/consumers/:consumerId/:eventId", getEventConsumer),
 )
 

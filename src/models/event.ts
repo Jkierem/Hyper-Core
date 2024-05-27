@@ -1,6 +1,7 @@
 import { Schema } from "@effect/schema";
 import { Effect, Option } from "effect";
 import { omit } from "effect/Struct";
+import { Timestamp } from "firebase-admin/firestore"
 
 export const EventItem = Schema.Struct({
     productId: Schema.String,
@@ -131,11 +132,10 @@ export const Firestore = {
     },
     HypeEvent: {
         to: (data: HypeEvent) => {
-            
             return {
                 ...omit(data, "id"),
                 inventory: data.inventory.map(Firestore.EventItem.to),
-                start: FirebaseFirestore.Timestamp.fromDate(new Date(data.start))
+                start: Timestamp.fromDate(new Date(data.start))
             } as FirestoreHypeEvent
         },
         from: (data: FirestoreHypeEvent & { id: string }) => {
@@ -148,7 +148,7 @@ export const Firestore = {
                 const raw = {
                     ...data,
                     inventory,
-                    start: (data.start as FirebaseFirestore.Timestamp).toDate().toISOString(),
+                    start: (data.start as Timestamp).toDate().toISOString(),
                 }
 
                 return yield* _(Schema.decodeUnknown(HypeEvent)(raw))
@@ -156,3 +156,10 @@ export const Firestore = {
         }
     }
 };
+
+export const IncreaseStock = Schema.Struct({
+    amount: Schema.Positive,
+    productId: Schema.String
+})
+
+export type IncreaseStock = Schema.Schema.Type<typeof IncreaseStock>;
