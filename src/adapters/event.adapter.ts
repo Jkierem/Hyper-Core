@@ -127,7 +127,7 @@ export class EventAdapter extends Context.Tag("EventAdapter")<
     static InMemory = EventAdapter.InMemoryWith([
         {
             creator: '2eb32c64-34f6-4f96-b2ae-92cc342dc5db',
-            id: '1705d85c-4ed6-4e49-8aad-31ab21633819',
+            id: '123456789',
             inventory: [
                 {
                     limit: Option.some(2),
@@ -136,7 +136,7 @@ export class EventAdapter extends Context.Tag("EventAdapter")<
                 }
             ],
             invites: [
-                "843eab58-e81c-4242-bce1-da9a5a00d90f",
+                "957474949965434",
             ],
             name: "Mock Event",
             productLimit: 50,
@@ -145,10 +145,10 @@ export class EventAdapter extends Context.Tag("EventAdapter")<
         },
         {
             creator: '2eb32c64-34f6-4f96-b2ae-92cc342dc5db',
-            id: '1705d85c-4ed6-4e49-8aad-31ab21633820',
+            id: '1234567890',
             inventory: [],
             invites: [
-                "843eab58-e81c-4242-bce1-da9a5a00d90f",
+                "957474949965434",
             ],
             name: "Mock Event 2",
             productLimit: 100,

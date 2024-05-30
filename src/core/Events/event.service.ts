@@ -165,6 +165,7 @@ export class EventService extends Context.Tag("EventService")<
                 )
             },
             receiveOrder(order: unknown) {
+                console.log("raw", order)
                 return pipe(
                     decodeOrder(order),
                     Effect.mapError(error => new BadRequest({ error })),
