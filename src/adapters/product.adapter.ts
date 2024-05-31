@@ -87,5 +87,5 @@ extends Context.Tag("ProductAdapter")<
         })
     }))
 
-    static InMemory = this.InMemoryWith(makeNProducts(5));
+    static InMemory = this.InMemoryWith(makeNProducts(10));
 }

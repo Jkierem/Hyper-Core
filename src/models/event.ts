@@ -28,6 +28,7 @@ export const HypeEvent = Schema.Struct({
     start: Schema.Date,
     status: EventStatus,
     productLimit: Schema.Number,
+    purchaseLimit: Schema.Number,
 })
 
 export type HypeEvent = Schema.Schema.Type<typeof HypeEvent>;
@@ -36,13 +37,13 @@ export const HypeEvents = Schema.Array(HypeEvent);
 
 export type HypeEvents = Schema.Schema.Type<typeof HypeEvents>;
 
-export const CreateEvent = HypeEvent.pipe(
-    Schema.omit("id"),
-    Schema.omit("inventory"),
-    Schema.omit("invites"),
-    Schema.omit("status"),
-    Schema.omit("productLimit"),
-);
+export const CreateEvent = Schema.Struct({
+    name: Schema.String,
+    creator: Schema.String,
+    start: Schema.Date,
+    productLimit: Schema.Number,
+    purchaseLimit: Schema.Number,
+})
 
 export type CreateEvent = Schema.Schema.Type<typeof CreateEvent>;
 

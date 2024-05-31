@@ -41,7 +41,12 @@ export class UserAdapter extends Context.Tag("UserAdapter")<
     static InMemory = this.InMemoryWith([
         { 
             name: "Juan Gomez", 
-            id: '2eb32c64-34f6-4f96-b2ae-92cc342dc5db',
+            id: '8h5s6XFczvCC2FFrxVtT',
+            group: "admin"
+        },
+        { 
+            name: "Juan Gomez 2", 
+            id: 'CntBmNfdrLhLO3YWOI0i',
             group: "admin"
         }
     ]);

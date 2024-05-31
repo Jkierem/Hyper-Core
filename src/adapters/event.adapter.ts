@@ -28,8 +28,6 @@ export class EventAdapter extends Context.Tag("EventAdapter")<
                     ...data,
                     inventory: [],
                     invites: [],
-                    productLimit: 999,
-                    purchaseLimit: 999,
                     status: "ready",
                 } as Omit<HypeEvent, "id">;
 
@@ -96,8 +94,6 @@ export class EventAdapter extends Context.Tag("EventAdapter")<
                     id: crypto.randomUUID(),
                     inventory: [],
                     invites: [],
-                    productLimit: 0,
-                    purchaseLimit: 0,
                     status: "ready",
                 } as HypeEvent;
 
@@ -124,36 +120,5 @@ export class EventAdapter extends Context.Tag("EventAdapter")<
         })
     }))
 
-    static InMemory = EventAdapter.InMemoryWith([
-        {
-            creator: '2eb32c64-34f6-4f96-b2ae-92cc342dc5db',
-            id: '123456789',
-            inventory: [
-                {
-                    limit: Option.some(2),
-                    productId: "1",
-                    stock: 100
-                }
-            ],
-            invites: [
-                "957474949965434",
-            ],
-            name: "Mock Event",
-            productLimit: 50,
-            start: new Date(),
-            status: "ready",
-        },
-        {
-            creator: '2eb32c64-34f6-4f96-b2ae-92cc342dc5db',
-            id: '1234567890',
-            inventory: [],
-            invites: [
-                "957474949965434",
-            ],
-            name: "Mock Event 2",
-            productLimit: 100,
-            start: new Date(),
-            status: "ready",
-        }
-    ])
+    static InMemory = EventAdapter.InMemoryWith([])
 }
